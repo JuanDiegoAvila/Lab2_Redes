@@ -48,7 +48,7 @@ def hamming(mensaje):
         else:
             mensaje_final[paridad[0]-1] = 1
 
-    mensaje_final = mensaje_final[::-1]
+    # mensaje_final = mensaje_final[::-1]
     mensaje_final = " ".join(str(x) for x in mensaje_final)
     print(f"Mensaje con bits de paridad: {mensaje_final}")
 

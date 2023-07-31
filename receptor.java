@@ -40,6 +40,14 @@ public class receptor {
 
         // Como solo hay una linea, se puede acceder a ella con el indice 0
         String[] mensaje = lines.get(0).split(" ");
+        
+        int tamaño = mensaje.length;
+
+        String[] mensaje_r = new String[tamaño];
+        for (int i = tamaño - 1; i >= 0; i--) {
+            mensaje_r[i] = mensaje[tamaño - i - 1];
+        }
+        mensaje = mensaje_r;
 
         // Se obtiene el numero de bits de paridad
         int bits_paridad = 0;
@@ -47,7 +55,6 @@ public class receptor {
             bits_paridad++;
         }
         
-        int tamaño = mensaje.length;
 
 
         List<Integer> paridades = new ArrayList<>();
