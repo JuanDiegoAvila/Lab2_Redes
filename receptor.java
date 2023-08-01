@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -21,7 +22,117 @@ public class receptor {
     }
 
     public static void crc_32() {
-        System.out.println("crc_32");
+        String fileName = "./crc_32.txt"; 
+
+        List<String> lines = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                lines.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Como solo hay una linea, se puede acceder a ella con el indice 0
+        String[] leido = lines.get(0).split("");
+        int[] mensaje = new int[leido.length];
+
+        for (int i = 0; i < leido.length; i++) {
+            mensaje[i] = Integer.parseInt(leido[i]);
+        }
+
+        int[] estandar_grados = {1, 2, 4, 5, 7, 8, 10, 11, 12, 16, 22, 23, 26, 32};
+        int pol = 33; // Ejemplo: ajusta esto al tamaño necesario para tu caso
+
+        int[] codigo = new int[pol];
+
+        for (int i = 0; i < pol; i++) {
+            if (Arrays.binarySearch(estandar_grados, i + 1) >= 0) {
+                codigo[i] = 1;
+            }
+        }
+
+        int[] reversedCodigo = new int[codigo.length + 1];
+        for (int i = 0; i < codigo.length; i++) {
+            reversedCodigo[codigo.length - 1 - i] = codigo[i];
+        }
+        reversedCodigo[codigo.length] = 1;
+        codigo = reversedCodigo;
+
+        int polinomio = codigo.length;
+        // int[] temp_mensaje = Arrays.copyOfRange(mensaje, 0, polinomio);
+        ArrayList<Integer> temp_mensaje = new ArrayList<>();
+        for (int i = 0; i < polinomio; i++) {
+            temp_mensaje.add(mensaje[i]);
+        }
+        
+        int indice = mensaje.length;
+        boolean termino = false;
+
+        while (!termino) {
+            int[] xor = new int[polinomio];
+            for (int i = 0; i < polinomio; i++) {
+                xor[i] = temp_mensaje.get(i) ^ codigo[i];
+            }
+            // temp_mensaje = xor;
+            temp_mensaje = new ArrayList<>();
+            for (int i = 0; i < xor.length; i++) {
+                temp_mensaje.add(xor[i]);
+            }
+            
+
+            if(indice >= mensaje.length) {
+                termino = true;
+            } else {
+                boolean hay_uno = false;
+
+                for(int i = 0; i < temp_mensaje.size(); i++) {
+                    if(temp_mensaje.get(i) == 1) {
+                        hay_uno = true;
+                    }
+                    if (temp_mensaje.get(i) == 0 && !hay_uno) {
+                        // temp_mensaje.get(i) = 2;
+                        temp_mensaje.set(i, 2);
+                    }
+                }
+
+                int j = 0;
+                for (int i = 0; i < temp_mensaje.size(); i++) {
+                    if (temp_mensaje.get(i) == 2) {
+                        // temp_mensaje2[j] = temp_mensaje[i];
+                        temp_mensaje.remove(i);
+                        j++;
+                    }
+                }
+
+                // temp_mensaje = temp_mensaje2;
+
+                if(temp_mensaje.size() < codigo.length) {
+                    int faltantes = codigo.length - temp_mensaje.size();
+
+                    for(int i = 0; i < faltantes; i++) {
+                        if(indice >= mensaje.length) {
+                            break;
+                        }
+
+                        // temp_mensaje.gtemp_mensaje.size()] = mensaje[indice];
+                        temp_mensaje.add(mensaje[indice]);
+                        indice++;
+                    }
+
+                }   
+                // temp_mensaje = temp_mensaje2;
+            }
+
+        }
+        
+        // System.out.println(Arrays.toString(temp_mensaje));
+        for (int i = 0; i < temp_mensaje.size(); i++) {
+            System.out.print(temp_mensaje.get(i));
+        }
+
     } 
 
     public static void hamming() {
@@ -39,7 +150,7 @@ public class receptor {
         }
 
         // Como solo hay una linea, se puede acceder a ella con el indice 0
-        String[] mensaje = lines.get(0).split(" ");
+        String[] mensaje = lines.get(0).split("");
         
         int tamaño = mensaje.length;
 
@@ -192,7 +303,7 @@ public class receptor {
 
             System.out.println("\n\nMensaje recibido y codificado: ");
             for (int i = mensaje_original.size() - 1; i >= 0; i--) {
-                System.out.print(mensaje_original.get(i) + " ");
+                System.out.print(mensaje_original.get(i) + "");
             }
         }
 
@@ -221,7 +332,9 @@ public class receptor {
                     System.out.println("\n\n==============================================\n");
                     break;
                 case 2:
-                    System.out.println("CRC");
+                    System.out.println("\n================== CRC_32 ==================\n");
+                    crc_32();
+                    System.out.println("\n\n==============================================\n");
                     break;
             }
 

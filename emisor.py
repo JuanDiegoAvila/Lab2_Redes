@@ -49,7 +49,7 @@ def hamming(mensaje):
             mensaje_final[paridad[0]-1] = 1
 
     # mensaje_final = mensaje_final[::-1]
-    mensaje_final = " ".join(str(x) for x in mensaje_final)
+    mensaje_final = "".join(str(x) for x in mensaje_final)
     print(f"Mensaje con bits de paridad: {mensaje_final}")
 
     # Guardar mensaje en archivo para el receptor
@@ -58,59 +58,60 @@ def hamming(mensaje):
     f.close()
 
 
-def crc_32(mensaje):
-    mensaje = list(mensaje)
-    mensaje_final = np.zeros(32 + len(mensaje), dtype=int)
+# def crc_32(mensaje):
+#     mensaje = list(mensaje)
+#     mensaje_final = np.zeros(32 + len(mensaje), dtype=int)
 
-    # Agregar mensaje inicial al comienzo del mensaje final
-    for i in range(len(mensaje)):
-        mensaje_final[i] = mensaje[i]
+#     # Agregar mensaje inicial al comienzo del mensaje final
+#     for i in range(len(mensaje)):
+#         mensaje_final[i] = mensaje[i]
 
-    estandar_grados = [1, 2, 4, 5, 7, 8, 10, 11, 12, 16, 22, 23, 26, 32]
-    codigo = np.zeros(32, dtype=int)
+#     estandar_grados = [1, 2, 4, 5, 7, 8, 10, 11, 12, 16, 22, 23, 26, 32]
+#     codigo = np.zeros(32, dtype=int)
+#     print(estandar_grados)
 
-    for i in range(32):
-        if i+1 in estandar_grados:
-            codigo[i] = 1
+#     for i in range(32):
+#         if i+1 in estandar_grados:
+#             codigo[i] = 1
 
-    codigo = codigo[::-1]
-    codigo = np.append(codigo, 1)
+#     codigo = codigo[::-1]
+#     codigo = np.append(codigo, 1)
 
-    print(codigo)
-    print(mensaje_final)
+#     print(codigo)
+#     print(mensaje_final)
 
-    # XOR entre mensaje y codigo
-    termino = False
-    temp_resultado = []
-    temp_mensaje = mensaje_final[:len(codigo)]
-    indice = len(codigo)
+#     # XOR entre mensaje y codigo
+#     termino = False
+#     temp_resultado = []
+#     temp_mensaje = mensaje_final[:len(codigo)]
+#     indice = len(codigo)
 
-    while not termino:
-        xor = [mensaje ^ codigo for mensaje, codigo in zip(temp_mensaje, codigo)]
+#     while not termino:
+#         xor = [mensaje ^ codigo for mensaje, codigo in zip(temp_mensaje, codigo)]
 
-        if indice >= len(mensaje_final):
-            termino = True
+#         if indice >= len(mensaje_final):
+#             termino = True
         
-        else:
-            temp_mensaje = xor
+#         else:
+#             temp_mensaje = xor
 
-            for element in temp_mensaje:
-                if element == 0:
-                    temp_mensaje.remove(element)
-                else:
-                    break
+#             for element in temp_mensaje:
+#                 if element == 0:
+#                     temp_mensaje.remove(element)
+#                 else:
+#                     break
             
-            if len(temp_mensaje) < len(codigo):
-                faltantes = len(codigo) - len(temp_mensaje)
-                for i in range(faltantes):
-                    temp_mensaje = np.append(temp_mensaje, mensaje_final[indice])
-                    indice += 1
+#             if len(temp_mensaje) < len(codigo):
+#                 faltantes = len(codigo) - len(temp_mensaje)
+#                 for i in range(faltantes):
+#                     temp_mensaje = np.append(temp_mensaje, mensaje_final[indice])
+#                     indice += 1
         
-        temp_resultado = xor
+#         temp_resultado = xor
     
-    print(temp_resultado)
+#     print(temp_resultado)
 
-def crc_323(mensaje, polinomio = 32):
+def crc_32(mensaje, polinomio = 32):
     mensaje = list(mensaje)
     mensaje_final = np.zeros(polinomio + len(mensaje), dtype=int)
 
@@ -128,14 +129,21 @@ def crc_323(mensaje, polinomio = 32):
     codigo = codigo[::-1]
     codigo = np.append(codigo, 1)
 
+    # codigo = [1, 0, 0, 1]
+
     # XOR entre mensaje y codigo
     termino = False
+    se_paso = False
     temp_mensaje = mensaje_final[:len(codigo)]
     indice = len(codigo)
 
     while not termino:
         xor = [mensaje ^ codigo for mensaje, codigo in zip(temp_mensaje, codigo)]
-        temp_mensaje = xor
+        
+        if not se_paso:
+            temp_mensaje = xor
+
+
         if indice >= len(mensaje_final):
             termino = True
         
@@ -152,13 +160,18 @@ def crc_323(mensaje, polinomio = 32):
             if len(temp_mensaje) < len(codigo):
                 faltantes = len(codigo) - len(temp_mensaje)
                 for i in range(faltantes):
-
                     if indice >= len(mensaje_final):
+                        if len(temp_mensaje) < len(codigo):
+                            faltantes = len(codigo) - len(temp_mensaje)
+                            for i in range(faltantes):
+                                # temp_mensaje = np.append(temp_mensaje, 0)
+                                # ponerlos al inicio
+                                temp_mensaje = np.insert(temp_mensaje, 0, 0)
+                        se_paso = True
                         break
 
                     temp_mensaje = np.append(temp_mensaje, mensaje_final[indice])
                     indice += 1
-    
 
     # agarrar los ultimos polinomio bits del mensaje final
     trama = temp_mensaje[-polinomio:]
@@ -166,7 +179,7 @@ def crc_323(mensaje, polinomio = 32):
     # Mensaje final es el mensaje inicial + la trama
     mensaje_final = np.append(mensaje, trama)
     
-    mensaje_final = " ".join(str(x) for x in mensaje_final)
+    mensaje_final = "".join(str(x) for x in mensaje_final)
     print(f"Mensaje con trama: {mensaje_final}")
 
     # Guardar mensaje en archivo para el receptor
@@ -193,5 +206,5 @@ while opcion != "3":
     elif opcion == "2":
         print("\n================== CRC-32 ===================\n")
         in_ = input("Ingrese la cadena de bits: ")
-        crc_323(in_)
+        crc_32(in_)
         print("\n=============================================\n")
