@@ -21,6 +21,51 @@ public class receptor {
         return result.toString();
     }
 
+    public static boolean contains(int[] array, int value) {
+        for (int num : array) {
+            if (num == value) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean decode_crc32( List<Integer> temp_mensaje, int[] gradosInvertidos, int tamano, int indice, int[] mensajeOriginal){
+        while(temp_mensaje.size() >= tamano){
+            for (int i = 0; i < gradosInvertidos.length; i++) {
+                temp_mensaje.set(i, temp_mensaje.get(i) ^ gradosInvertidos[i]);
+            }
+            //System.out.println("Mensaje: " + temp_mensaje.toString());
+
+            while(temp_mensaje.get(0) == 0){
+                temp_mensaje.remove(0);
+                if(temp_mensaje.size() == 0){
+                    //System.out.println("Retornando en true 1");
+                    return true;
+                }
+            }
+
+
+            if(temp_mensaje.size() < tamano && indice < mensajeOriginal.length){
+                while(temp_mensaje.size() < tamano && indice < mensajeOriginal.length){
+                    temp_mensaje.add(mensajeOriginal[indice]);
+                    indice++;
+                }
+            }else{
+                //System.out.println("Retornando en false 1");
+                return false;
+            }
+
+            
+        }
+        if (temp_mensaje.size() != 0){
+            //System.out.println("Retornando en false 2");
+            return false;
+        }
+        //System.out.println("Retornando en true 2");
+        return true;
+    }
+
     public static void crc_32() {
         String fileName = "./crc_32.txt"; 
 
@@ -41,98 +86,52 @@ public class receptor {
 
         for (int i = 0; i < leido.length; i++) {
             mensaje[i] = Integer.parseInt(leido[i]);
+            //System.out.print(mensaje[i]);
         }
 
-        int[] estandar_grados = {1, 2, 4, 5, 7, 8, 10, 11, 12, 16, 22, 23, 26, 32};
+
+        int[] estandar_grados = {0, 1, 2, 4, 5, 7, 8, 10, 11, 12, 16, 22, 23, 26, 32};
         int pol = 33; // Ejemplo: ajusta esto al tamaño necesario para tu caso
-
-        int[] codigo = new int[pol];
-
+        int[] grados = new int[pol];
         for (int i = 0; i < pol; i++) {
-            if (Arrays.binarySearch(estandar_grados, i + 1) >= 0) {
-                codigo[i] = 1;
+            if (contains(estandar_grados, i)) {
+                grados[i] = 1;
+            } else {
+                grados[i] = 0;
             }
         }
 
-        int[] reversedCodigo = new int[codigo.length + 1];
-        for (int i = 0; i < codigo.length; i++) {
-            reversedCodigo[codigo.length - 1 - i] = codigo[i];
+        int[] gradosInvertidos = new int[grados.length];
+        int lastIndex = grados.length - 1;
+        for (int i = 0; i < grados.length; i++) {
+            gradosInvertidos[i] = grados[lastIndex - i];
         }
-        reversedCodigo[codigo.length] = 1;
-        codigo = reversedCodigo;
 
-        int polinomio = codigo.length;
-        // int[] temp_mensaje = Arrays.copyOfRange(mensaje, 0, polinomio);
-        ArrayList<Integer> temp_mensaje = new ArrayList<>();
-        for (int i = 0; i < polinomio; i++) {
+        for (int i = 0; i < gradosInvertidos.length; i++) {
+            System.out.print(gradosInvertidos[i]);
+        }
+        System.out.println("\n");
+
+        
+        int tamano = gradosInvertidos.length;
+        int indice = tamano;
+        List<Integer> temp_mensaje = new ArrayList<>();
+        for (int i = 0; i < tamano; i++) {
             temp_mensaje.add(mensaje[i]);
         }
-        
-        int indice = mensaje.length;
-        boolean termino = false;
-
-        while (!termino) {
-            int[] xor = new int[polinomio];
-            for (int i = 0; i < polinomio; i++) {
-                xor[i] = temp_mensaje.get(i) ^ codigo[i];
+        System.out.println(temp_mensaje.size());
+        boolean not_error = decode_crc32(temp_mensaje, gradosInvertidos, tamano, indice, mensaje);
+        if(not_error){
+            System.out.println("No hay error en el mensaje");
+            System.out.println("\nMensaje original: ");
+            int tamaño_original = mensaje.length - (gradosInvertidos.length-1);
+            for (int i = 0; i < tamaño_original; i++) {
+                System.out.print(mensaje[i]);
             }
-            // temp_mensaje = xor;
-            temp_mensaje = new ArrayList<>();
-            for (int i = 0; i < xor.length; i++) {
-                temp_mensaje.add(xor[i]);
-            }
-            
-
-            if(indice >= mensaje.length) {
-                termino = true;
-            } else {
-                boolean hay_uno = false;
-
-                for(int i = 0; i < temp_mensaje.size(); i++) {
-                    if(temp_mensaje.get(i) == 1) {
-                        hay_uno = true;
-                    }
-                    if (temp_mensaje.get(i) == 0 && !hay_uno) {
-                        // temp_mensaje.get(i) = 2;
-                        temp_mensaje.set(i, 2);
-                    }
-                }
-
-                int j = 0;
-                for (int i = 0; i < temp_mensaje.size(); i++) {
-                    if (temp_mensaje.get(i) == 2) {
-                        // temp_mensaje2[j] = temp_mensaje[i];
-                        temp_mensaje.remove(i);
-                        j++;
-                    }
-                }
-
-                // temp_mensaje = temp_mensaje2;
-
-                if(temp_mensaje.size() < codigo.length) {
-                    int faltantes = codigo.length - temp_mensaje.size();
-
-                    for(int i = 0; i < faltantes; i++) {
-                        if(indice >= mensaje.length) {
-                            break;
-                        }
-
-                        // temp_mensaje.gtemp_mensaje.size()] = mensaje[indice];
-                        temp_mensaje.add(mensaje[indice]);
-                        indice++;
-                    }
-
-                }   
-                // temp_mensaje = temp_mensaje2;
-            }
-
+        }else{
+            System.out.println("Error en el mensaje");
         }
         
-        // System.out.println(Arrays.toString(temp_mensaje));
-        for (int i = 0; i < temp_mensaje.size(); i++) {
-            System.out.print(temp_mensaje.get(i));
-        }
-
     } 
 
     public static void hamming() {
