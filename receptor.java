@@ -91,7 +91,7 @@ public class receptor {
 
 
         int[] estandar_grados = {0, 1, 2, 4, 5, 7, 8, 10, 11, 12, 16, 22, 23, 26, 32};
-        int pol = 33; // Ejemplo: ajusta esto al tamaño necesario para tu caso
+        int pol = 33; // Ejemplo: ajusta esto al tamano necesario para tu caso
         int[] grados = new int[pol];
         for (int i = 0; i < pol; i++) {
             if (contains(estandar_grados, i)) {
@@ -107,10 +107,10 @@ public class receptor {
             gradosInvertidos[i] = grados[lastIndex - i];
         }
 
-        for (int i = 0; i < gradosInvertidos.length; i++) {
-            System.out.print(gradosInvertidos[i]);
-        }
-        System.out.println("\n");
+        // for (int i = 0; i < gradosInvertidos.length; i++) {
+        //     System.out.print(gradosInvertidos[i]);
+        // }
+        // System.out.println("\n");
 
         
         int tamano = gradosInvertidos.length;
@@ -119,13 +119,13 @@ public class receptor {
         for (int i = 0; i < tamano; i++) {
             temp_mensaje.add(mensaje[i]);
         }
-        System.out.println(temp_mensaje.size());
+        // System.out.println(temp_mensaje.size());
         boolean not_error = decode_crc32(temp_mensaje, gradosInvertidos, tamano, indice, mensaje);
         if(not_error){
             System.out.println("No hay error en el mensaje");
             System.out.println("\nMensaje original: ");
-            int tamaño_original = mensaje.length - (gradosInvertidos.length-1);
-            for (int i = 0; i < tamaño_original; i++) {
+            int tamano_original = mensaje.length - (gradosInvertidos.length-1);
+            for (int i = 0; i < tamano_original; i++) {
                 System.out.print(mensaje[i]);
             }
         }else{
@@ -151,11 +151,11 @@ public class receptor {
         // Como solo hay una linea, se puede acceder a ella con el indice 0
         String[] mensaje = lines.get(0).split("");
         
-        int tamaño = mensaje.length;
+        int tamano = mensaje.length;
 
-        String[] mensaje_r = new String[tamaño];
-        for (int i = tamaño - 1; i >= 0; i--) {
-            mensaje_r[i] = mensaje[tamaño - i - 1];
+        String[] mensaje_r = new String[tamano];
+        for (int i = tamano - 1; i >= 0; i--) {
+            mensaje_r[i] = mensaje[tamano - i - 1];
         }
         mensaje = mensaje_r;
 
@@ -175,7 +175,7 @@ public class receptor {
 
         for (int paridad : paridades) {
             List<Integer> fila = new ArrayList<>();
-            for (int i = 0; i < tamaño; i++) {
+            for (int i = 0; i < tamano + 1; i++) {
                 if ((i + 1 & paridad) == paridad) {
                     fila.add(i + 1);
                 }
@@ -183,9 +183,9 @@ public class receptor {
             tabla.add(fila);
         }
 
-        String[] mensaje_revertido = new String[tamaño];
-        for (int i = tamaño - 1; i >= 0; i--) {
-            mensaje_revertido[i] = mensaje[tamaño - i - 1];
+        String[] mensaje_revertido = new String[tamano];
+        for (int i = tamano - 1; i >= 0; i--) {
+            mensaje_revertido[i] = mensaje[tamano - i - 1];
         }
 
         // imprimir la tabla
@@ -201,6 +201,7 @@ public class receptor {
             }   
             tabla_paridad.add(fila);
         }
+
 
         ArrayList<Integer> resultados = new ArrayList<>();
         for (int i = 0; i < tabla_paridad.size(); i++) {
@@ -235,8 +236,8 @@ public class receptor {
         if (error == 0) {
             System.out.println("No hay error en el mensaje");
             
-            int tamaño_original = tamaño - bits_paridad;
-            int tamaño_actual = 0;
+            int tamano_original = tamano - bits_paridad;
+            int tamano_actual = 0;
             List<String> mensaje_original = new ArrayList<>();
 
             // recorrer el mensaje revertido
@@ -249,9 +250,9 @@ public class receptor {
                     }
                 }
 
-                if (!es_paridad && tamaño_actual < tamaño_original) {
+                if (!es_paridad && tamano_actual < tamano_original) {
                     mensaje_original.add(mensaje_revertido[i]);
-                    tamaño_actual++;
+                    tamano_actual++;
                 }
             }
 
@@ -290,8 +291,8 @@ public class receptor {
                 System.out.print(mensaje_revertido[i] + " ");
             }
 
-            int tamaño_original = tamaño - bits_paridad;
-            int tamaño_actual = 0;
+            int tamano_original = tamano - bits_paridad;
+            int tamano_actual = 0;
             List<String> mensaje_original = new ArrayList<>();
 
             for (int i = 0; i < mensaje_revertido.length; i++) {
@@ -302,9 +303,9 @@ public class receptor {
                     }
                 }
 
-                if (!es_paridad && tamaño_actual < tamaño_original) {
+                if (!es_paridad && tamano_actual < tamano_original) {
                     mensaje_original.add(mensaje_revertido[i]);
-                    tamaño_actual++;
+                    tamano_actual++;
                 }
             }
 
