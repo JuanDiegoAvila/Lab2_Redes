@@ -7,7 +7,7 @@ def hamming(mensaje):
     # Calculo de bits de paridad
     while 2**bits_paridad < cantidad_bits + bits_paridad + 1:
         bits_paridad += 1
-
+    print(bits_paridad)
     # print(f"Bits de paridad segun cantidad de bits de {cantidad_bits} : {bits_paridad} ")
 
     tamaño = bits_paridad + cantidad_bits
@@ -50,66 +50,12 @@ def hamming(mensaje):
 
     # mensaje_final = mensaje_final[::-1]
     mensaje_final = "".join(str(x) for x in mensaje_final)
-    print(f"Mensaje con bits de paridad: {mensaje_final}")
+    print(f"Mensaje con bits de paridad: {mensaje_final[::-1]}")
 
     # Guardar mensaje en archivo para el receptor
     with open("./hamming.txt", "w") as f:
         f.write(mensaje_final)
     f.close()
-
-
-# def crc_32(mensaje):
-#     mensaje = list(mensaje)
-#     mensaje_final = np.zeros(32 + len(mensaje), dtype=int)
-
-#     # Agregar mensaje inicial al comienzo del mensaje final
-#     for i in range(len(mensaje)):
-#         mensaje_final[i] = mensaje[i]
-
-#     estandar_grados = [1, 2, 4, 5, 7, 8, 10, 11, 12, 16, 22, 23, 26, 32]
-#     codigo = np.zeros(32, dtype=int)
-#     print(estandar_grados)
-
-#     for i in range(32):
-#         if i+1 in estandar_grados:
-#             codigo[i] = 1
-
-#     codigo = codigo[::-1]
-#     codigo = np.append(codigo, 1)
-
-#     print(codigo)
-#     print(mensaje_final)
-
-#     # XOR entre mensaje y codigo
-#     termino = False
-#     temp_resultado = []
-#     temp_mensaje = mensaje_final[:len(codigo)]
-#     indice = len(codigo)
-
-#     while not termino:
-#         xor = [mensaje ^ codigo for mensaje, codigo in zip(temp_mensaje, codigo)]
-
-#         if indice >= len(mensaje_final):
-#             termino = True
-        
-#         else:
-#             temp_mensaje = xor
-
-#             for element in temp_mensaje:
-#                 if element == 0:
-#                     temp_mensaje.remove(element)
-#                 else:
-#                     break
-            
-#             if len(temp_mensaje) < len(codigo):
-#                 faltantes = len(codigo) - len(temp_mensaje)
-#                 for i in range(faltantes):
-#                     temp_mensaje = np.append(temp_mensaje, mensaje_final[indice])
-#                     indice += 1
-        
-#         temp_resultado = xor
-    
-#     print(temp_resultado)
 
 def crc_32(mensaje, polinomio = 32):
     mensaje = list(mensaje)

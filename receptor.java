@@ -166,7 +166,6 @@ public class receptor {
         }
         
 
-
         List<Integer> paridades = new ArrayList<>();
         for (int i = 0; i < bits_paridad; i++) {
             paridades.add(1 << i);
@@ -191,8 +190,6 @@ public class receptor {
 
         // imprimir la tabla
         List<List<Integer>> tabla_paridad = new ArrayList<>();
-
-        
         for (int j = 0; j < tabla.size(); j++) {
             List<Integer> fila = new ArrayList<>();
             for (int k = 0; k < tabla.get(j).size(); k++) {
@@ -221,6 +218,14 @@ public class receptor {
                 resultados.add(1);
             }
         }
+
+        // volteamos el resultado
+        ArrayList<Integer> resultados_revertidos = new ArrayList<>();
+        for (int i = resultados.size() - 1; i >= 0; i--) {
+            resultados_revertidos.add(resultados.get(i));
+        }
+        resultados = resultados_revertidos;
+
 
         int error = 0;
         for (int i = 0; i < resultados.size(); i++) {
@@ -251,7 +256,10 @@ public class receptor {
             }
 
             System.out.println("\nMensaje original: ");
-            for (int i = mensaje_original.size() - 1; i >= 0; i--) {
+            // for (int i = mensaje_original.size() - 1; i >= 0; i--) {
+            //     System.out.print(mensaje_original.get(i) + " ");
+            // }
+            for (int i = 0; i < mensaje_original.size(); i++) {
                 System.out.print(mensaje_original.get(i) + " ");
             }
 
@@ -265,7 +273,7 @@ public class receptor {
 
             System.out.println("Error en el bit " + decimal + " del mensaje original");
 
-            System.out.println("\nMensaje original: ");
+            System.out.println("\nMensaje recibido: ");
             for (int i = mensaje_revertido.length - 1; i >= 0; i--) {
                 System.out.print(mensaje_revertido[i] + " ");
             }
