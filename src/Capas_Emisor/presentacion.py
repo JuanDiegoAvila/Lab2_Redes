@@ -1,19 +1,23 @@
+from .enlace import *
+
 class Presentacion(object):
-    def __init__(self, mensaje_original):
+    def __init__(self, mensaje_original, algoritmo):
         self._mensajeOriginal = mensaje_original
         self._mensajeCodificado = None
+        self._algoritmo = algoritmo
+        self.codificar_mensaje()
+        self._enlace = Enlace(self._mensajeCodificado, self._algoritmo)
+
+
     
     def codificar_mensaje(self):
-
+        print(" ----------- Codificando mensaje -----------\n")
         codificacion = ''
         for caracter in self._mensajeOriginal:
             valor_ascii = ord(caracter)
             representacion_binaria = bin(valor_ascii)[2:]
             codificacion += representacion_binaria+' '
-    
-        self._mensajeCodificado = codificacion
-        return codificacion
 
-mensaje = input('Ingrese el mensaje a codificar: ')
-presentacion = Presentacion(mensaje)
-print(presentacion.codificar_mensaje())
+        print('\nMensaje codificado: ', codificacion)
+        self._mensajeCodificado = codificacion
+

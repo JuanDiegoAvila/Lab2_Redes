@@ -1,10 +1,4 @@
-import sys
-import os
-
-ruta_padre = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-sys.path.append(ruta_padre)
-
-from Algoritmos.emisorAL import Hamming, CRC32
+from .presentacion import *
 
 class Aplicacion(object):
     def __init__(self):
@@ -13,6 +7,7 @@ class Aplicacion(object):
         self._mensaje = None
     
     def solicitar_mensaje(self):
+        print(" ----------- Solicitando mensaje -----------\n")
         print("\n Seleccione el algoritmo a utilizar\n")
         for i in range(len(self._algoritmos)):
             print("\t[ "+str(i+1) + " ] " + self._algoritmos[i])
@@ -21,7 +16,6 @@ class Aplicacion(object):
         mensaje = input("\nIngrese el mensaje a enviar: ")
         self._mensaje = mensaje
 
-        if opcion == 1:
-            self._algoritmo = Hamming(mensaje)
-        elif opcion == 2:
-            self._algoritmo = CRC32(mensaje)
+        for char in mensaje:
+            presentacion = Presentacion(char, algoritmo=self._algoritmos[opcion-1])
+

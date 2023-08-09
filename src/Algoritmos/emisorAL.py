@@ -6,7 +6,15 @@ class Hamming(object):
         self._mensaje = mensaje
 
     def calcular(self):
-        mensaje = self._mensaje
+        m = self._mensaje
+
+        # Definir mensaje final
+        mensaje = list(m)
+        
+        #convertir elementos de mensaje a int
+        for i in range(len(mensaje)):
+            if mensaje[i] == " ":
+                mensaje.pop(i)
 
         bits_paridad = 0
         cantidad_bits = len(mensaje)
@@ -14,13 +22,13 @@ class Hamming(object):
         # Calculo de bits de paridad
         while 2**bits_paridad < cantidad_bits + bits_paridad + 1:
             bits_paridad += 1
-        print(bits_paridad)
+
         # print(f"Bits de paridad segun cantidad de bits de {cantidad_bits} : {bits_paridad} ")
 
         tamaño = bits_paridad + cantidad_bits
 
-        # Definir mensaje final
-        mensaje = list(mensaje)
+        
+
         mensaje_final = np.zeros(tamaño, dtype=int)
 
         # Calculo de bits de paridad
@@ -57,7 +65,7 @@ class Hamming(object):
 
         # mensaje_final = mensaje_final[::-1]
         mensaje_final = "".join(str(x) for x in mensaje_final)
-        print(f"Mensaje con bits de paridad: {mensaje_final[::-1]}")
+        print(f"\nMensaje con bits de paridad: {mensaje_final[::-1]}\n")
 
         # # Guardar mensaje en archivo para el receptor
         # with open("./hamming.txt", "w") as f:
