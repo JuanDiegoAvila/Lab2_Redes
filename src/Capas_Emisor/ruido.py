@@ -9,12 +9,13 @@ class Ruido(object):
         
 
     def agregar_ruido(self):
-        print(" ----------- Agregando ruido -----------\n")
+        print(" Agregando ruido ...\n")
         mensaje_list = self._mensaje.split()
 
         for element in range(len(mensaje_list)):
             prob = random.randint(0, 99)
             if prob == 0:
+                print('Se agrego ruido...')
                 if mensaje_list[element] == '0':
                     mensaje_list[element] = '1'
 

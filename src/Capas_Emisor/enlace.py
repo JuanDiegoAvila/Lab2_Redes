@@ -17,7 +17,7 @@ class Enlace(object):
         Ruido(self._mensaje_final, self._algoritmo)
 
     def calcular_integridad(self):
-        print(" ----------- Calculando integridad -----------\n")
+        print(" Calculando integridad ...\n")
         if self._algoritmo == 'Hamming':
             self._mensaje_final = Hamming(self._mensaje_binario).calcular()
 

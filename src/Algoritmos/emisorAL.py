@@ -81,10 +81,18 @@ class CRC32(object):
 
 
     def calcular(self):
-        mensaje = self._mensaje
         polinomio = self._polinomio
 
-        mensaje = list(mensaje)
+        m = self._mensaje
+
+        # Definir mensaje final
+        mensaje = list(m)
+        
+        #convertir elementos de mensaje a int
+        for i in range(len(mensaje)):
+            if mensaje[i] == " ":
+                mensaje.pop(i)
+
         mensaje_final = np.zeros(polinomio + len(mensaje), dtype=int)
 
         # Agregar mensaje inicial al comienzo del mensaje final

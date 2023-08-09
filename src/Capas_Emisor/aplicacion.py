@@ -7,7 +7,7 @@ class Aplicacion(object):
         self._mensaje = None
     
     def solicitar_mensaje(self):
-        print(" ----------- Solicitando mensaje -----------\n")
+        print(" Solicitando mensaje ...\n")
         print("\n Seleccione el algoritmo a utilizar\n")
         for i in range(len(self._algoritmos)):
             print("\t[ "+str(i+1) + " ] " + self._algoritmos[i])

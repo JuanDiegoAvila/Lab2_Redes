@@ -11,7 +11,7 @@ class Presentacion(object):
 
     
     def codificar_mensaje(self):
-        print(" ----------- Codificando mensaje -----------\n")
+        print(" Codificando mensaje ...\n")
         codificacion = ''
         for caracter in self._mensajeOriginal:
             valor_ascii = ord(caracter)

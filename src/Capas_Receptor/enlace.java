@@ -19,6 +19,7 @@ public class enlace {
                 
                 error = (boolean) obj[0];
                 mensaje_decoded = (String) obj[1];
+                break;
 
             case "Hamming":
                 System.out.println("LLamada a hamming");
@@ -28,6 +29,7 @@ public class enlace {
                 }
                 error = (boolean) obj[0];
                 mensaje_decoded = (String) obj[1];
+                break;
 
         }
 

@@ -8,7 +8,7 @@ class Transmision(object):
 
     
     def transmitir(self, mensaje):
-        print(" ----------- Transmitiendo mensaje -----------\n")
+        print(" Transmitiendo mensaje ...\n")
         emisor = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         emisor.connect((self._direccion, self._puerto))
         emisor.send(mensaje.encode('utf-8'))
