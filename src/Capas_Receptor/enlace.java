@@ -53,7 +53,12 @@ public class enlace {
         receptorAL rec = new receptorAL();
 
         String mensaje_decoded = rec.correccion_hamming(mensaje);
-        p.decodificar_mensaje(mensaje_decoded, false, final_oracion, decoder);
+        if(mensaje_decoded.equals("ERROR")){
+            p.decodificar_mensaje(mensaje, true, final_oracion, decoder);
+        }
+        else {
+            p.decodificar_mensaje(mensaje_decoded, false, final_oracion, decoder);
+        }
     }
 
 }

@@ -199,7 +199,7 @@ public class receptorAL {
 
         if(decimal >= mensaje.length) {
             System.out.println("Error en el mensaje");
-            return m;
+            return "ERROR";
         }
         
         // El error esta en la posicion decimal del mensaje original

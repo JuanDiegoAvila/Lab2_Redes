@@ -13,6 +13,9 @@ public class presentacion {
 
             aplicacion.mostrarMensaje(String.valueOf(character), error, final_oracion, decoder);
         }
+        else {
+            aplicacion.mostrarMensaje(mensaje, error, final_oracion, decoder);
+        }
 
     }
     

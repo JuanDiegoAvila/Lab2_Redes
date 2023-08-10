@@ -16,7 +16,7 @@ class Ruido(object):
             mensaje_list.append(c)
             
         for element in range(len(mensaje_list)):
-            prob = random.randint(0, 99)
+            prob = random.randint(0, 100)
             if prob == 0:
                 print('Se agrego ruido...')
                 if mensaje_list[element] == '0':
