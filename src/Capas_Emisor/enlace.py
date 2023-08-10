@@ -9,12 +9,12 @@ from Algoritmos.emisorAL import Hamming, CRC32
 from .ruido import *
 
 class Enlace(object):
-    def __init__(self, mensaje_binario, algoritmo):
+    def __init__(self, mensaje_binario, algoritmo, final = False):
         self._algoritmo = algoritmo
         self._mensaje_binario = str(mensaje_binario)
         self.mensaje_nuevo = None
         self.calcular_integridad()
-        Ruido(self._mensaje_final, self._algoritmo)
+        Ruido(self._mensaje_final, self._algoritmo, final)
 
     def calcular_integridad(self):
         print(" Calculando integridad ...\n")

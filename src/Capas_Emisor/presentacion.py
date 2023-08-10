@@ -1,12 +1,12 @@
 from .enlace import *
 
 class Presentacion(object):
-    def __init__(self, mensaje_original, algoritmo):
+    def __init__(self, mensaje_original, algoritmo, final = False):
         self._mensajeOriginal = mensaje_original
         self._mensajeCodificado = None
         self._algoritmo = algoritmo
         self.codificar_mensaje()
-        self._enlace = Enlace(self._mensajeCodificado, self._algoritmo)
+        self._enlace = Enlace(self._mensajeCodificado, self._algoritmo, final)
 
 
     

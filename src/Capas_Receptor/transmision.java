@@ -16,11 +16,14 @@ public class transmision {
                     entrada = new BufferedReader(new InputStreamReader(cliente.getInputStream()));
                     
                     mensaje = entrada.readLine();
+                    System.out.println("\nEl mensaje recibido es: " + mensaje);
 
-                    String[] recibidos = mensaje.split(" | ");
+                    String[] recibidos = mensaje.split("\\|");
+
 
                     String mensaje_recibido = recibidos[0];
-                    String algoritmo = recibidos[recibidos.length - 1];
+                    boolean final_oracion = Boolean.parseBoolean(recibidos[2]);
+                    String algoritmo = recibidos[1];
 
                     if (mensaje_recibido == "SALIR") {
                         cliente.close();
@@ -28,7 +31,7 @@ public class transmision {
                     else{
                         System.out.println("\nEl mensaje recibido es: " + mensaje_recibido);
                         enlace e = new enlace();
-                        e.verificar_integridad(mensaje_recibido, algoritmo);
+                        e.verificar_integridad(mensaje_recibido, algoritmo, final_oracion);
                     }
                     entrada.close();
 

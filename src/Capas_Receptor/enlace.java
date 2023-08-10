@@ -4,7 +4,7 @@ import Algoritmos.receptorAL;
 
 public class enlace {
 
-    public void verificar_integridad(String mensaje, String decoder){
+    public void verificar_integridad(String mensaje, String decoder, boolean final_oracion){
         System.out.println("Verificando integridad ...\n");
         boolean error = false;
         String mensaje_decoded = "";
@@ -14,7 +14,7 @@ public class enlace {
 
         switch(decoder) {
             case "CRC32":
-                System.out.println("LLamada a crc32");
+                System.out.println("LLamada a crc32 con "+mensaje);
                 obj = rec.crc_32(mensaje);
                 
                 error = (boolean) obj[0];
@@ -37,23 +37,23 @@ public class enlace {
         presentacion p = new presentacion();
         if(error){
             if (decoder.equals("Hamming")){
-                corregir_mensaje(mensaje);
+                corregir_mensaje(mensaje, final_oracion, decoder);
             }
             else {
-                p.decodificar_mensaje(mensaje_decoded, error);
+                p.decodificar_mensaje(mensaje_decoded, error, final_oracion, decoder);
             }
         }
         else {
-            p.decodificar_mensaje(mensaje_decoded, error);
+            p.decodificar_mensaje(mensaje_decoded, error, final_oracion, decoder);
         }
     }
 
-    public void corregir_mensaje(String mensaje){
+    public void corregir_mensaje(String mensaje, boolean final_oracion, String decoder){
         presentacion p = new presentacion();
         receptorAL rec = new receptorAL();
 
         String mensaje_decoded = rec.correccion_hamming(mensaje);
-        p.decodificar_mensaje(mensaje_decoded, false);
+        p.decodificar_mensaje(mensaje_decoded, false, final_oracion, decoder);
     }
 
 }

@@ -6,16 +6,17 @@ class Aplicacion(object):
         self._algoritmo = None
         self._mensaje = None
     
-    def solicitar_mensaje(self):
-        print(" Solicitando mensaje ...\n")
-        print("\n Seleccione el algoritmo a utilizar\n")
-        for i in range(len(self._algoritmos)):
-            print("\t[ "+str(i+1) + " ] " + self._algoritmos[i])
-        opcion = int(input("\nOpcion: "))
-
-        mensaje = input("\nIngrese el mensaje a enviar: ")
+    def solicitar_mensaje(self, algoritmo, mensaje):
         self._mensaje = mensaje
 
+        n_char = 0
         for char in mensaje:
-            presentacion = Presentacion(char, algoritmo=self._algoritmos[opcion-1])
+            
+            n_char += 1
+            if n_char == len(mensaje):
+                Presentacion(char, algoritmo=algoritmo, final=True)
+                break
+
+            Presentacion(char, algoritmo=algoritmo)
+            
 

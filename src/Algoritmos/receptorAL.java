@@ -116,6 +116,7 @@ public class receptorAL {
 
     public String correccion_hamming(String m){
         String[] mensaje = m.split("");
+        System.out.println("Mensaje recibido: " + m);
         
         int tamano = mensaje.length;
 
@@ -195,10 +196,15 @@ public class receptorAL {
 
         String bits = joinArrayList(resultados, "");
         int decimal = Integer.parseInt(bits, 2);
+
+        if(decimal >= mensaje.length) {
+            System.out.println("Error en el mensaje");
+            return m;
+        }
         
         // El error esta en la posicion decimal del mensaje original
 
-        // System.out.println("Error en el bit " + decimal + " del mensaje original");
+        System.out.println("Error en el bit " + decimal + " del mensaje original");
 
         if (mensaje_revertido[decimal - 1].equals("1")) {
             mensaje_revertido[decimal - 1] = "0";
@@ -363,6 +369,7 @@ public class receptorAL {
 
             hay_error = true;
             System.out.println("Error en el mensaje");
+            
         }
 
         Object[] Object = new Object[2];
