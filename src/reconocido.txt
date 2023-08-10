@@ -91,7 +91,7 @@ aeFsENeMVvY Hamming
 JfEGygfiGnWv Hamming
 czCHwEHsuERUJT Hamming
 ERROR CRC32
-SiJImnFOMqXnjE Hamming
+SiJImnFOMqXnjE Hamming
 ERROR CRC32
 ERROR CRC32
 ERROR CRC32
@@ -5620,7 +5620,7 @@ ERROR CRC32
 ERROR CRC32
 f Hamming
 RkCeARvldRXNPIstga Hamming
-MSpAS
+MSpASZa Hamming
 a Hamming
 qiWb CRC32
 k Hamming
